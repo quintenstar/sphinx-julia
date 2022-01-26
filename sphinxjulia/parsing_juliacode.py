@@ -63,8 +63,9 @@ class JuliaParser:
     def parsefile_pyjulia(self, sourcepath):
         j = self.julia
         current_dir= os.path.dirname(os.path.realpath(__file__))
-        parsetools_dir = os.path.join(current_dir, "parsetools/src/")
+        parsetools_dir = os.path.join(current_dir, r"parsetools/src/")
 
+        print(os.path.normpath(parsetools_dir))
         j.eval('push!(LOAD_PATH, "{}")'.format(os.path.normpath(parsetools_dir)))
         j.eval('using parsetools')
         j.eval('model = parsetools.reader.read_file("{}")'.format(os.path.normpath(sourcepath)))
