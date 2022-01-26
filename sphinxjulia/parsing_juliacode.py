@@ -65,9 +65,9 @@ class JuliaParser:
         current_dir= os.path.dirname(os.path.realpath(__file__))
         parsetools_dir = os.path.join(current_dir, "parsetools/src/")
 
-        j.eval('push!(LOAD_PATH, "{}")'.format(parsetools_dir))
+        j.eval('push!(LOAD_PATH, "{}")'.format(os.path.normpath(parsetools_dir)))
         j.eval('using parsetools')
-        j.eval('model = parsetools.reader.read_file("{}")'.format(sourcepath))
+        j.eval('model = parsetools.reader.read_file("{}")'.format(os.path.normpath(sourcepath)))
         text = j.eval('string(model)')
         model = eval(text, eval_environment)
         self.cached_files[sourcepath] = model
@@ -80,7 +80,7 @@ class JuliaParser:
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (buf, err) = p.communicate()
         if p.returncode != 0:
-            print("Parsing file {} failed with error message:".format(sourcepath))
+            print("Parsing file {} failed with error message:".format(os.path.normpath(sourcepath)))
             print("-"*80)
             print(err.decode("utf-8"))
             print("-"*80)
